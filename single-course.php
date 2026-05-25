@@ -49,29 +49,16 @@
           </div>
           <div class="sidebar-info">
             <div class="sidebar-info-item">
-              <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> <?php esc_html_e( 'Duration', 'lingo-house' ); ?></span>
-              <span class="value"><?php echo esc_html( get_post_meta( get_the_ID(), 'course_duration', true ) ?: '4-12 weeks' ); ?></span>
-            </div>
-            <div class="sidebar-info-item">
               <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg> <?php esc_html_e( 'Levels', 'lingo-house' ); ?></span>
               <span class="value"><?php echo esc_html( get_post_meta( get_the_ID(), 'course_levels', true ) ?: 'A1 – C2' ); ?></span>
             </div>
             <div class="sidebar-info-item">
-              <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <?php esc_html_e( 'Group Size', 'lingo-house' ); ?></span>
-              <span class="value"><?php esc_html_e( 'Max 12 students', 'lingo-house' ); ?></span>
-            </div>
-            <div class="sidebar-info-item">
-              <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> <?php esc_html_e( 'Starting From', 'lingo-house' ); ?></span>
+              <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> <?php esc_html_e( 'Price', 'lingo-house' ); ?></span>
               <span class="value" style="color:var(--orange);font-size:16px"><?php echo esc_html( get_post_meta( get_the_ID(), 'course_price', true ) ?: 'AED 1,200' ); ?></span>
-            </div>
-            <div class="sidebar-info-item">
-              <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> <?php esc_html_e( 'Schedule', 'lingo-house' ); ?></span>
-              <span class="value"><?php esc_html_e( 'Flexible', 'lingo-house' ); ?></span>
             </div>
           </div>
           <div class="sidebar-actions">
-            <button class="btn-register"><?php esc_html_e( 'Register Now', 'lingo-house' ); ?></button>
-            <button class="btn-free-trial"><?php esc_html_e( 'Book Free Trial', 'lingo-house' ); ?></button>
+            <a href="<?php echo esc_url( get_permalink( lingo_house_get_page_id_by_template( 'page-contact.php' ) ) ); ?>" class="btn-register" style="display:block;text-align:center;text-decoration:none;"><?php esc_html_e( 'Contact Us', 'lingo-house' ); ?></a>
           </div>
         </div>
       </div>
