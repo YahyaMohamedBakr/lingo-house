@@ -139,12 +139,16 @@
         ) );
         $rd = 0.05;
         if ( $related->have_posts() ) :
-            while ( $related->have_posts() ) : $related->the_post(); ?>
+            while ( $related->have_posts() ) : $related->the_post();
+                $r_lang = wp_get_post_terms( get_the_ID(), 'language' );
+                $r_slug = ! empty( $r_lang ) ? $r_lang[0]->slug : 'german';
+                $r_name = ! empty( $r_lang ) ? $r_lang[0]->name : __( 'Course', 'lingo-house' );
+                ?>
                 <div class="course-detail-card anim" style="transition-delay:<?php echo esc_attr( $rd ); ?>s">
-                  <div class="card-top card-german"><span class="flag">DE</span><div class="overlay"></div></div>
+                  <div class="card-top card-german"><span class="flag"><?php echo esc_html( lingo_house_get_flag( $r_slug ) ); ?></span><div class="overlay"></div></div>
                   <div class="card-body">
                     <h3><?php the_title(); ?></h3>
-                    <div class="card-meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> <?php esc_html_e( 'German Course', 'lingo-house' ); ?></span></div>
+                    <div class="card-meta"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg> <?php echo esc_html( $r_name ); ?></span></div>
                     <p><?php echo wp_trim_words( get_the_excerpt() ? get_the_excerpt() : get_the_content(), 15 ); ?></p>
                     <a href="<?php the_permalink(); ?>" class="btn-outline"><?php esc_html_e( 'View Course', 'lingo-house' ); ?> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
                   </div>
@@ -155,6 +159,48 @@
             wp_reset_postdata();
         endif;
         ?>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT CTA ========== -->
+  <section class="corporate-section">
+    <div class="container">
+      <div class="corporate-grid">
+        <div class="corporate-left anim">
+          <span class="section-tag"><?php esc_html_e( 'Get Started', 'lingo-house' ); ?></span>
+          <h2 class="section-title" style="color:#fff"><?php esc_html_e( 'Ready to Start This Course?', 'lingo-house' ); ?></h2>
+          <p><?php esc_html_e( 'Contact us to register, ask questions, or schedule a free trial class. Our team is here to help.', 'lingo-house' ); ?></p>
+          <div class="corporate-features">
+            <div class="corporate-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> <?php esc_html_e( 'Free trial class', 'lingo-house' ); ?></div>
+            <div class="corporate-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> <?php esc_html_e( 'Flexible schedule', 'lingo-house' ); ?></div>
+            <div class="corporate-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> <?php esc_html_e( 'KHDA accredited', 'lingo-house' ); ?></div>
+            <div class="corporate-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> <?php esc_html_e( 'Online & in-person', 'lingo-house' ); ?></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            <a href="<?php echo esc_url( get_permalink( lingo_house_get_page_id_by_template( 'page-contact.php' ) ) ); ?>" class="btn-corporate"><?php esc_html_e( 'Register Now', 'lingo-house' ); ?> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            <?php $phone = lingo_house_get_contact( 'phone' ); if ( $phone ) : ?>
+              <a href="tel:<?php echo esc_attr( $phone ); ?>" class="btn-free-trial" style="background:transparent;border:2px solid rgba(255,255,255,.3);color:#fff;padding:10px 24px;border-radius:8px;display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;">📞 <?php echo esc_html( $phone ); ?></a>
+            <?php endif; ?>
+          </div>
+        </div>
+        <div class="corporate-right anim" style="transition-delay:.15s">
+          <div class="corporate-cats-card">
+            <h3><?php echo esc_html( get_bloginfo( 'name' ) ); ?></h3>
+            <div class="cats-grid">
+              <?php $address = lingo_house_get_contact( 'address' ); if ( $address ) : ?>
+                <div class="cat-item"><span class="dot"></span><?php echo esc_html( $address ); ?></div>
+              <?php endif; ?>
+              <?php $email = lingo_house_get_contact( 'email' ); if ( $email ) : ?>
+                <div class="cat-item"><span class="dot"></span><?php echo esc_html( $email ); ?></div>
+              <?php endif; ?>
+              <div class="cat-item"><span class="dot"></span><?php esc_html_e( 'KHDA Accredited', 'lingo-house' ); ?></div>
+              <div class="cat-item"><span class="dot"></span><?php esc_html_e( 'Expert Native Teachers', 'lingo-house' ); ?></div>
+              <div class="cat-item"><span class="dot"></span><?php esc_html_e( 'Small Class Sizes', 'lingo-house' ); ?></div>
+              <div class="cat-item"><span class="dot"></span><?php esc_html_e( 'Free Level Assessment', 'lingo-house' ); ?></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
