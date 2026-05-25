@@ -72,7 +72,7 @@
                 ?>
                 <div class="lang-card anim" style="transition-delay:<?php echo esc_attr( $delay ); ?>s">
                   <div class="lang-card-header <?php echo esc_attr( $card_class ); ?>" data-card="<?php echo esc_attr( $slug ); ?>">
-                    <span class="flag"><?php echo esc_html( substr( $lang->name, 0, 2 ) ); ?></span><div class="overlay"></div>
+                    <span class="flag"><?php echo esc_html( lingo_house_get_flag( $lang->slug ) ); ?></span><div class="overlay"></div>
                     <div class="header-bottom"><h3><?php echo esc_html( $lang->name ); ?></h3><svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
                   </div>
                   <div class="lang-card-body">
@@ -108,7 +108,7 @@
                 ?>
                 <div class="lang-card anim" style="transition-delay:<?php echo esc_attr( $d ); ?>s">
                   <div class="lang-card-header <?php echo esc_attr( $card_class ); ?>" data-card="<?php echo esc_attr( $slug ); ?>">
-                    <span class="flag"><?php echo esc_html( substr( $name, 0, 2 ) ); ?></span><div class="overlay"></div>
+                    <span class="flag"><?php echo esc_html( lingo_house_get_flag( $slug ) ); ?></span><div class="overlay"></div>
                     <div class="header-bottom"><h3><?php echo esc_html( $name ); ?></h3><svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></div>
                   </div>
                   <div class="lang-card-body">

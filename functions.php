@@ -381,6 +381,26 @@ function lingo_house_body_classes( $classes ) {
 }
 add_filter( 'body_class', 'lingo_house_body_classes' );
 
+/* ── Language Flag Emojis ── */
+function lingo_house_get_flag( $slug ) {
+    $flags = array(
+        'arabic'  => '🇸🇦',
+        'english' => '🇬🇧',
+        'russian' => '🇷🇺',
+        'spanish' => '🇪🇸',
+        'german'  => '🇩🇪',
+        'italian' => '🇮🇹',
+        'turkish' => '🇹🇷',
+        'french'  => '🇫🇷',
+        'chinese' => '🇨🇳',
+        'japanese'=> '🇯🇵',
+        'korean'  => '🇰🇷',
+        'portuguese' => '🇧🇷',
+        'dutch'   => '🇳🇱',
+    );
+    return isset( $flags[ $slug ] ) ? $flags[ $slug ] : '🌐';
+}
+
 /* ── Get page ID by template ── */
 function lingo_house_get_page_id_by_template( $template_name ) {
     $pages = get_pages( array(
