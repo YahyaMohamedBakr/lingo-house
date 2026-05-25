@@ -162,6 +162,42 @@ function lingo_house_activate() {
     lingo_house_register_course_cpt();
     lingo_house_register_language_taxonomy();
     lingo_house_register_course_type_taxonomy();
+
+    /* Create default pages */
+    $pages = array(
+        'home'       => array( 'title' => 'Home',       'template' => '' ),
+        'about'      => array( 'title' => 'About',      'template' => 'page-about.php' ),
+        'contact'    => array( 'title' => 'Contact',    'template' => 'page-contact.php' ),
+        'courses'    => array( 'title' => 'Courses',    'template' => '' ),
+        'blog'       => array( 'title' => 'Blog',       'template' => '' ),
+        'kids'       => array( 'title' => 'Kids',       'template' => '' ),
+        'corporates' => array( 'title' => 'Corporates', 'template' => '' ),
+    );
+
+    foreach ( $pages as $slug => $page ) {
+        $existing = get_page_by_path( $slug );
+        if ( ! $existing ) {
+            wp_insert_post( array(
+                'post_title'   => $page['title'],
+                'post_name'    => $slug,
+                'post_status'  => 'publish',
+                'post_type'    => 'page',
+                'page_template' => $page['template'],
+            ) );
+        }
+    }
+
+    /* Set homepage & blog page */
+    $home_page  = get_page_by_path( 'home' );
+    $blog_page  = get_page_by_path( 'blog' );
+    if ( $home_page && get_option( 'page_on_front' ) !== 'page' ) {
+        update_option( 'page_on_front', $home_page->ID );
+        update_option( 'show_on_front', 'page' );
+    }
+    if ( $blog_page ) {
+        update_option( 'page_for_posts', $blog_page->ID );
+    }
+
     flush_rewrite_rules();
 }
 add_action( 'after_switch_theme', 'lingo_house_activate' );
