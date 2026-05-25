@@ -73,12 +73,18 @@
                     $type_slugs[] = $tt->slug;
                 }
                 $card_class = $lang_terms ? 'card-' . $lang_terms[0]->slug : 'card-german';
-                $flag_emoji = '';
                 $lang_slug  = $lang_terms ? $lang_terms[0]->slug : 'german';
+                $lang_id    = $lang_terms ? $lang_terms[0]->term_id : 0;
+                $lang_img   = $lang_id ? lingo_house_get_language_image( $lang_id ) : '';
                 ?>
                 <div class="course-detail-card anim" data-lang="<?php echo esc_attr( implode( ',', $lang_slugs ) ); ?>" data-types="<?php echo esc_attr( implode( ',', $type_slugs ) ); ?>" style="transition-delay:<?php echo esc_attr( $delay ); ?>s">
                   <div class="card-top <?php echo esc_attr( $card_class ); ?>">
-                    <span class="flag"><?php echo esc_html( $lang_name ? substr( $lang_name, 0, 2 ) : 'DE' ); ?></span><div class="overlay"></div>
+                    <?php if ( $lang_img ) : ?>
+                      <img src="<?php echo esc_url( $lang_img ); ?>" alt="<?php echo esc_attr( $lang_name ?: 'Course' ); ?>" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />
+                    <?php else : ?>
+                      <span class="flag"><?php echo esc_html( lingo_house_get_flag( $lang_slug ) ); ?></span>
+                    <?php endif; ?>
+                    <div class="overlay"></div>
                   </div>
                   <div class="card-body">
                     <h3><?php the_title(); ?></h3>
@@ -110,7 +116,7 @@
             foreach ( $sample_courses as $sc ) : ?>
                 <div class="course-detail-card anim" data-lang="<?php echo esc_attr( $sc['lang'] ); ?>" data-types="<?php echo esc_attr( $sc['types'] ); ?>" style="transition-delay:<?php echo esc_attr( $delay ); ?>s">
                   <div class="card-top card-german">
-                    <span class="flag">DE</span><div class="overlay"></div>
+                    <span class="flag"><?php echo esc_html( lingo_house_get_flag( $sc['lang'] ) ); ?></span><div class="overlay"></div>
                   </div>
                   <div class="card-body">
                     <h3><?php echo esc_html( $sc['title'] ); ?></h3>

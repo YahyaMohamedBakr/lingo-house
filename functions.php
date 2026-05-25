@@ -126,6 +126,44 @@ function lingo_house_register_language_taxonomy() {
 }
 add_action( 'init', 'lingo_house_register_language_taxonomy' );
 
+/* ── Language Taxonomy Image Field ── */
+function lingo_house_language_add_fields( $taxonomy ) {
+    $image = ''; ?>
+    <div class="form-field term-image-wrap">
+        <label for="lingo-house-lang-image"><?php esc_html_e( 'Language Image URL', 'lingo-house' ); ?></label>
+        <input type="text" name="lingo_house_lang_image" id="lingo-house-lang-image" value="<?php echo esc_attr( $image ); ?>" />
+        <p><?php esc_html_e( 'Enter the URL of an image (flag, icon, etc.) to represent this language on course cards.', 'lingo-house' ); ?></p>
+    </div>
+    <?php
+}
+add_action( 'language_add_form_fields', 'lingo_house_language_add_fields' );
+
+function lingo_house_language_edit_fields( $term ) {
+    $image = get_term_meta( $term->term_id, 'lingo_house_lang_image', true ); ?>
+    <tr class="form-field term-image-wrap">
+        <th scope="row"><label for="lingo-house-lang-image"><?php esc_html_e( 'Language Image URL', 'lingo-house' ); ?></label></th>
+        <td>
+            <input type="text" name="lingo_house_lang_image" id="lingo-house-lang-image" value="<?php echo esc_attr( $image ); ?>" class="regular-text" />
+            <p class="description"><?php esc_html_e( 'Enter the URL of an image (flag, icon, etc.) to represent this language on course cards.', 'lingo-house' ); ?></p>
+        </td>
+    </tr>
+    <?php
+}
+add_action( 'language_edit_form_fields', 'lingo_house_language_edit_fields' );
+
+function lingo_house_language_save_fields( $term_id ) {
+    if ( isset( $_POST['lingo_house_lang_image'] ) ) {
+        update_term_meta( $term_id, 'lingo_house_lang_image', esc_url_raw( $_POST['lingo_house_lang_image'] ) );
+    }
+}
+add_action( 'created_language', 'lingo_house_language_save_fields' );
+add_action( 'edited_language', 'lingo_house_language_save_fields' );
+
+function lingo_house_get_language_image( $term_id ) {
+    $image = get_term_meta( $term_id, 'lingo_house_lang_image', true );
+    return $image ? $image : '';
+}
+
 /* ── Register Taxonomy: Course Type ── */
 function lingo_house_register_course_type_taxonomy() {
     $labels = array(
