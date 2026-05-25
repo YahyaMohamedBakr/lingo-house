@@ -11,12 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'LINGO_HOUSE_DIR', get_template_directory() );
+define( 'LINGO_HOUSE_URI', get_template_directory_uri() );
+define( 'LINGO_HOUSE_VERSION', '1.0.0' );
 
 require_once LINGO_HOUSE_DIR . '/inc/class-lingo-house-walker-nav.php';
-
-define( 'LINGO_HOUSE_VERSION', '1.0.0' );
-define( 'LINGO_HOUSE_DIR', get_template_directory() );
-define( 'LINGO_HOUSE_URI', get_template_directory_uri() );
 
 /* ── Theme Setup ── */
 function lingo_house_setup() {
