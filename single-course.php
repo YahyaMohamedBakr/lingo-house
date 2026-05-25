@@ -56,6 +56,16 @@
               <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> <?php esc_html_e( 'Price', 'lingo-house' ); ?></span>
               <span class="value" style="color:var(--orange);font-size:16px"><?php echo esc_html( get_post_meta( get_the_ID(), 'course_price', true ) ?: 'AED 1,200' ); ?></span>
             </div>
+            <?php $audiences = wp_get_post_terms( get_the_ID(), 'audience' ); if ( ! empty( $audiences ) && ! is_wp_error( $audiences ) ) : ?>
+            <div class="sidebar-info-item" style="grid-column:1/-1;">
+              <span class="label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <?php esc_html_e( 'Audience', 'lingo-house' ); ?></span>
+              <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;">
+                <?php foreach ( $audiences as $a ) : ?>
+                  <span style="background:var(--orange);color:#fff;font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600;"><?php echo esc_html( $a->name ); ?></span>
+                <?php endforeach; ?>
+              </div>
+            </div>
+            <?php endif; ?>
           </div>
           <div class="sidebar-actions">
             <a href="<?php echo esc_url( get_permalink( lingo_house_get_page_id_by_template( 'page-contact.php' ) ) ); ?>" class="btn-register" style="display:block;text-align:center;text-decoration:none;"><?php esc_html_e( 'Contact Us', 'lingo-house' ); ?></a>

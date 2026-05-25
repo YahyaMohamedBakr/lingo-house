@@ -88,7 +88,7 @@ function lingo_house_register_course_cpt() {
         'menu_position'       => 5,
         'supports'            => array( 'title', 'editor', 'thumbnail', 'excerpt', 'custom-fields', 'revisions', 'page-attributes' ),
         'rewrite'             => array( 'slug' => 'courses', 'with_front' => false ),
-        'taxonomies'          => array( 'language', 'course-type' ),
+        'taxonomies'          => array( 'language', 'course-type', 'audience' ),
     );
 
     register_post_type( 'course', $args );
@@ -195,11 +195,98 @@ function lingo_house_register_course_type_taxonomy() {
 }
 add_action( 'init', 'lingo_house_register_course_type_taxonomy' );
 
+/* ── Register Taxonomy: Audience (non-hierarchical, like tags) ── */
+function lingo_house_register_audience_taxonomy() {
+    $labels = array(
+        'name'                       => esc_html__( 'Audiences', 'lingo-house' ),
+        'singular_name'              => esc_html__( 'Audience', 'lingo-house' ),
+        'search_items'               => esc_html__( 'Search Audiences', 'lingo-house' ),
+        'popular_items'              => esc_html__( 'Popular Audiences', 'lingo-house' ),
+        'all_items'                  => esc_html__( 'All Audiences', 'lingo-house' ),
+        'edit_item'                  => esc_html__( 'Edit Audience', 'lingo-house' ),
+        'update_item'                => esc_html__( 'Update Audience', 'lingo-house' ),
+        'add_new_item'               => esc_html__( 'Add New Audience', 'lingo-house' ),
+        'new_item_name'              => esc_html__( 'New Audience Name', 'lingo-house' ),
+        'separate_items_with_commas' => esc_html__( 'Separate audiences with commas', 'lingo-house' ),
+        'add_or_remove_items'        => esc_html__( 'Add or remove audiences', 'lingo-house' ),
+        'choose_from_most_used'      => esc_html__( 'Choose from the most used audiences', 'lingo-house' ),
+        'menu_name'                  => esc_html__( 'Audiences', 'lingo-house' ),
+    );
+
+    $args = array(
+        'labels'            => $labels,
+        'hierarchical'      => false,
+        'public'            => true,
+        'show_ui'           => true,
+        'show_in_menu'      => true,
+        'show_in_nav_menus' => true,
+        'show_in_rest'      => true,
+        'show_tagcloud'     => true,
+        'rewrite'           => array( 'slug' => 'audience', 'with_front' => false ),
+    );
+
+    register_taxonomy( 'audience', array( 'course' ), $args );
+}
+add_action( 'init', 'lingo_house_register_audience_taxonomy' );
+
+/* ── Course Meta Box (Price & Level) ── */
+function lingo_house_course_meta_box() {
+    add_meta_box(
+        'lingo_house_course_details',
+        esc_html__( 'Course Details', 'lingo-house' ),
+        'lingo_house_course_meta_box_html',
+        'course',
+        'side',
+        'default'
+    );
+}
+add_action( 'add_meta_boxes', 'lingo_house_course_meta_box' );
+
+function lingo_house_course_meta_box_html( $post ) {
+    wp_nonce_field( 'lingo_house_course_save', 'lingo_house_course_nonce' );
+    $price  = get_post_meta( $post->ID, 'course_price', true );
+    $levels = get_post_meta( $post->ID, 'course_levels', true );
+    ?>
+    <p>
+        <label for="course_price"><?php esc_html_e( 'Price', 'lingo-house' ); ?></label><br>
+        <input type="text" id="course_price" name="course_price" value="<?php echo esc_attr( $price ); ?>" style="width:100%;margin-top:4px;" placeholder="<?php esc_attr_e( 'e.g. AED 1,200', 'lingo-house' ); ?>" />
+    </p>
+    <p>
+        <label for="course_levels"><?php esc_html_e( 'Levels', 'lingo-house' ); ?></label><br>
+        <input type="text" id="course_levels" name="course_levels" value="<?php echo esc_attr( $levels ); ?>" style="width:100%;margin-top:4px;" placeholder="<?php esc_attr_e( 'e.g. A1 – C2', 'lingo-house' ); ?>" />
+    </p>
+    <?php
+}
+
+function lingo_house_course_save_meta( $post_id ) {
+    if ( ! isset( $_POST['lingo_house_course_nonce'] ) ) {
+        return;
+    }
+    if ( ! wp_verify_nonce( $_POST['lingo_house_course_nonce'], 'lingo_house_course_save' ) ) {
+        return;
+    }
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    if ( ! current_user_can( 'edit_post', $post_id ) ) {
+        return;
+    }
+
+    if ( isset( $_POST['course_price'] ) ) {
+        update_post_meta( $post_id, 'course_price', sanitize_text_field( $_POST['course_price'] ) );
+    }
+    if ( isset( $_POST['course_levels'] ) ) {
+        update_post_meta( $post_id, 'course_levels', sanitize_text_field( $_POST['course_levels'] ) );
+    }
+}
+add_action( 'save_post_course', 'lingo_house_course_save_meta' );
+
 /* ── FLush Rewrite on Theme Switch ── */
 function lingo_house_activate() {
     lingo_house_register_course_cpt();
     lingo_house_register_language_taxonomy();
     lingo_house_register_course_type_taxonomy();
+    lingo_house_register_audience_taxonomy();
 
     /* Create default pages */
     $pages = array(
